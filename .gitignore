@@ -4,3 +4,6 @@ node_modules/
 !.env.example
 
 dist/
+.vscode
+.DS_Store
+*.code-workspace
