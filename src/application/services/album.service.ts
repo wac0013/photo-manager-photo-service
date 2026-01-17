@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, NotFoundException } from '@nestjs/common';
 
 import { CreateAlbumDto } from 'src/application/dto/album-create.dto';
 import { UpdateAlbumDto } from 'src/application/dto/album-update.dto';
@@ -35,7 +35,10 @@ export class AlbumService {
   }
 
   async deleteAlbum(id: string) {
-    await this.getAlbum(id);
+    const album = await this.getAlbum(id);
+    if (album.hasImages) {
+      throw new BadRequestException('Não é possível excluir um álbum que contém imagens. Remova as imagens primeiro.');
+    }
     return this.albumRepository.delete(id);
   }
 }

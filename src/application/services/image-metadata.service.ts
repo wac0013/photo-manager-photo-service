@@ -29,7 +29,7 @@ export class ImageMetadataService {
         width: metadata.width || 0,
         height: metadata.height || 0,
         format: metadata.format || 'unknown',
-        size: buffer.length,
+        size: buffer.byteLength,
         hasAlpha: metadata.hasAlpha || false,
         orientation: metadata.orientation,
         exif: metadata.exif ? this.parseExif(metadata.exif) : undefined,

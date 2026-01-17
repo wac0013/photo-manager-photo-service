@@ -7,6 +7,7 @@ import { PrismaPg } from '@prisma/adapter-pg';
 import { Prisma, PrismaClient } from '@prisma/client';
 
 import { createAuditExtension } from './audit.extension';
+import { setPrismaServiceInstance } from './prisma.context';
 import { createSoftDeleteExtension } from './soft-delete.extension';
 import { addSavepoint, getTransactionContext, removeSavepoint } from './transaction-context';
 import type { TransactionClient } from './types';
@@ -50,15 +51,16 @@ export class PrismaService implements OnModuleInit, OnModuleDestroy {
 
   async onModuleInit() {
     await this._client.$connect();
+    setPrismaServiceInstance(this);
   }
 
   async onModuleDestroy() {
     await this._client.$disconnect();
   }
 
-  getCurrentTransaction(): TransactionClient | ExtendedPrismaClient {
+  getCurrentTransaction(): ExtendedPrismaClient {
     const context = getTransactionContext();
-    return (context?.transaction as TransactionClient) || this._client;
+    return (context?.transaction as ExtendedPrismaClient) || this._client;
   }
 
   private _sanitizeSavepointName(name: string): string {

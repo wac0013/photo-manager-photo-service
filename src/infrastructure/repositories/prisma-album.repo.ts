@@ -14,26 +14,33 @@ export class PrismaAlbumRepository implements IAlbumRepository {
   constructor(private readonly prisma: PrismaService) { }
 
   get model() {
-    return this.prisma.client.album;
+    return this.prisma.getCurrentTransaction().album;
   }
 
   async findById(id: string): Promise<AlbumEntity | null> {
-    const album = await this.model.findUnique({ where: { id } });
-    return album ? new AlbumEntity(album) : null;
+    const album = await this.model.findUnique({ where: { id }, include: { photos: { take: 1 } } });
+    return album ? new AlbumEntity(album, album.photos[0]?.url) : null;
   }
 
   async findByCreatedBy(userId: string, query: InfinitePageQueryDto): Promise<InfinitePageResponseEntity<AlbumEntity>> {
     const albums = await this.model.findMany({
       where: {
-        createdBy: userId
+        createdBy: userId,
+        ...(query.cursor ? { createdAt: { lt: new Date(query.cursor) } } : {})
       },
-      orderBy: { id: 'desc' },
-      take: query.size,
-      ...(query.cursor ? { cursor: { id: query.cursor } } : {})
+      include: {
+        photos: {
+          take: 1,
+          orderBy: { createdAt: 'desc' }
+        }
+      },
+      orderBy: { createdAt: 'desc' },
+      take: query.size
     });
     return new InfinitePageResponseEntity(
-      albums.map(album => new AlbumEntity(album)),
-      query
+      albums.map(album => new AlbumEntity(album, album.photos[0]?.url)),
+      query,
+      'createdAt'
     );
   }
 
@@ -50,12 +57,18 @@ export class PrismaAlbumRepository implements IAlbumRepository {
   async update(id: string, data: UpdateAlbumDto): Promise<AlbumEntity> {
     const album = await this.model.update({
       where: { id },
+      include: {
+        photos: {
+          take: 1,
+          orderBy: { createdAt: 'desc' }
+        }
+      },
       data: {
         title: data.title,
         description: data.description
       }
     });
-    return new AlbumEntity(album);
+    return new AlbumEntity(album, album.photos[0]?.url);
   }
 
   async delete(id: string): Promise<void> {

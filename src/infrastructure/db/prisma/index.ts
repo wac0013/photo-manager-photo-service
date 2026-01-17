@@ -1,6 +1,7 @@
 export { PrismaService, createExtendedPrismaClient } from './prisma.service';
 export type { ExtendedPrismaClient } from './prisma.service';
 export { Transactional } from './transactional.decorator';
+export { getPrismaServiceInstance, setPrismaServiceInstance } from './prisma.context';
 export {
   getTransactionContext,
   setTransactionContext,

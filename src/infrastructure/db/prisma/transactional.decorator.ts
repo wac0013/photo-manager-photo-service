@@ -1,4 +1,6 @@
-import { PrismaService } from './prisma.service';
+import { Logger } from '@nestjs/common';
+
+import { getPrismaServiceInstance } from './prisma.context';
 import { getTransactionContext, runInTransactionContext } from './transaction-context';
 import type { TransactionIsolationLevel, TransactionalOptions } from './types';
 
@@ -19,20 +21,22 @@ export function Transactional(options: TransactionalOptions = {}) {
       maxWait = DEFAULT_OPTIONS.maxWait,
       requiredNew = DEFAULT_OPTIONS.requiredNew
     } = options;
+    const logger = new Logger(Transactional.name);
 
     descriptor.value = async function (this: any, ...args: any[]) {
-      const prismaService = this.prisma || this._prisma || this.prismaService || this._prismaService;
+      const prismaService = getPrismaServiceInstance();
 
-      if (!prismaService || !(prismaService instanceof PrismaService)) {
-        throw new Error(
-          'PrismaService não encontrado. Certifique-se de que o serviço possui PrismaService injetado como "prisma", "_prisma", "prismaService" ou "_prismaService".'
+      if (!prismaService) {
+        logger.error(
+          'PrismaService não encontrado. Certifique-se de que o PrismaModule foi inicializado antes de usar @Transactional().'
         );
+        return originalMethod.apply(this, args) as unknown as Promise<unknown>;
       }
 
       const currentContext = getTransactionContext();
 
       if (currentContext && !requiredNew) {
-        return originalMethod.apply(this, args);
+        return originalMethod.apply(this, args) as unknown as Promise<unknown>;
       }
 
       const transactionOptions = {
@@ -41,7 +45,7 @@ export function Transactional(options: TransactionalOptions = {}) {
         timeout
       };
 
-      const result = await (prismaService as any).$transaction(async (tx: any) => {
+      const result = await prismaService.$transaction(async (tx: any) => {
         const newContext = {
           transaction: tx,
           level: currentContext ? currentContext.level + 1 : 0,
@@ -50,8 +54,8 @@ export function Transactional(options: TransactionalOptions = {}) {
           savepoints: []
         };
 
-        return runInTransactionContext(newContext, async () => {
-          return await originalMethod.apply(this, args);
+        return runInTransactionContext(newContext, () => {
+          return originalMethod.apply(this, args) as unknown as Promise<unknown>;
         });
       }, transactionOptions);
 

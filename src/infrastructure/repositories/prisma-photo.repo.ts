@@ -14,7 +14,7 @@ export class PrismaPhotoRepository implements IPhotoRepository {
   constructor(private readonly prisma: PrismaService) { }
 
   get model() {
-    return this.prisma.client.photo;
+    return this.prisma.getCurrentTransaction().photo;
   }
 
   async findById(id: string): Promise<PhotoEntity | null> {
@@ -24,18 +24,18 @@ export class PrismaPhotoRepository implements IPhotoRepository {
 
   async findByAlbumId(albumId: string, query: InfinitePageQueryDto): Promise<InfinitePageResponseEntity<PhotoEntity>> {
     const photos = await this.model.findMany({
-      where: { albumId },
+      where: { albumId, ...(query.cursor ? { createdAt: { lt: new Date(query.cursor) } } : {}) },
       take: query.size,
-      ...(query.cursor ? { cursor: { id: query.cursor as string } } : {}),
-      orderBy: { id: 'desc' }
+      orderBy: { createdAt: 'desc' }
     });
     return new InfinitePageResponseEntity<PhotoEntity>(
       photos.map(photo => new PhotoEntity(photo)),
-      query
+      query,
+      'createdAt'
     );
   }
 
-  async create(data: CreatePhotoDto & { url: string, metadata: Record<string, any> }): Promise<PhotoEntity> {
+  async create(data: CreatePhotoDto & { url: string; metadata: Record<string, any> }): Promise<PhotoEntity> {
     const photo = await this.model.create({
       data: {
         title: data.title,
