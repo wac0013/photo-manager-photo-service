@@ -36,7 +36,7 @@ export class PhotoService {
     @Inject(IStorageService)
     private readonly storageService: IStorageService,
     private readonly imageMetadataService: ImageMetadataService
-  ) { }
+  ) {}
 
   async getPhoto(id: string) {
     const photo = await this.photoRepository.findById(id);

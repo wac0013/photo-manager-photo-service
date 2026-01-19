@@ -130,23 +130,23 @@ O serviço estará disponível em `http://localhost:4000`.
 
 ### Álbuns
 
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| GET | `/photos/v1/albums` | Lista álbuns do usuário |
-| GET | `/photos/v1/albums/:id` | Busca álbum por ID |
-| POST | `/photos/v1/albums` | Cria novo álbum |
-| PATCH | `/photos/v1/albums/:id` | Atualiza álbum |
-| DELETE | `/photos/v1/albums/:id` | Exclui álbum |
+| Método | Endpoint                | Descrição               |
+| ------ | ----------------------- | ----------------------- |
+| GET    | `/photos/v1/albums`     | Lista álbuns do usuário |
+| GET    | `/photos/v1/albums/:id` | Busca álbum por ID      |
+| POST   | `/photos/v1/albums`     | Cria novo álbum         |
+| PATCH  | `/photos/v1/albums/:id` | Atualiza álbum          |
+| DELETE | `/photos/v1/albums/:id` | Exclui álbum            |
 
 ### Fotos
 
-| Método | Endpoint | Descrição |
-|--------|----------|-----------|
-| GET | `/photos/v1/album/:albumId` | Lista fotos do álbum |
-| GET | `/photos/v1/:id` | Busca foto por ID |
-| POST | `/photos/v1` | Upload de nova foto |
-| PATCH | `/photos/v1/:id` | Atualiza foto |
-| DELETE | `/photos/v1/:id` | Exclui foto |
+| Método | Endpoint                    | Descrição            |
+| ------ | --------------------------- | -------------------- |
+| GET    | `/photos/v1/album/:albumId` | Lista fotos do álbum |
+| GET    | `/photos/v1/:id`            | Busca foto por ID    |
+| POST   | `/photos/v1`                | Upload de nova foto  |
+| PATCH  | `/photos/v1/:id`            | Atualiza foto        |
+| DELETE | `/photos/v1/:id`            | Exclui foto          |
 
 ### Documentação Swagger
 
@@ -155,6 +155,7 @@ Acesse `http://localhost:4000/docs` para a documentação interativa.
 ## 🎯 Funcionalidades
 
 ### Álbuns
+
 - ✅ CRUD completo
 - ✅ Paginação infinita com cursor
 - ✅ Soft delete
@@ -162,6 +163,7 @@ Acesse `http://localhost:4000/docs` para a documentação interativa.
 - ✅ Foto de capa automática
 
 ### Fotos
+
 - ✅ Upload multipart/form-data
 - ✅ Suporte a JPG, PNG, GIF, WebP, HEIC, HEIF
 - ✅ Limite de 10MB por arquivo
@@ -171,6 +173,7 @@ Acesse `http://localhost:4000/docs` para a documentação interativa.
 - ✅ Soft delete
 
 ### Transações
+
 - ✅ Decorator `@Transactional()` para transações automáticas
 - ✅ Suporte a níveis de isolamento
 - ✅ Rollback automático em caso de erro
@@ -180,6 +183,7 @@ Acesse `http://localhost:4000/docs` para a documentação interativa.
 Todas as rotas são protegidas pelo `AuthGuard` que valida o token JWT através do User Service.
 
 Headers necessários:
+
 ```
 Authorization: Bearer <token>
 ```

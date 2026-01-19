@@ -6,4 +6,4 @@ export const CreateAlbumSchema = z.object({
   description: z.string().optional().describe('Descrição do álbum')
 });
 
-export class CreateAlbumDto extends createZodDto(CreateAlbumSchema) { }
+export class CreateAlbumDto extends createZodDto(CreateAlbumSchema) {}

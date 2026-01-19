@@ -11,7 +11,7 @@ import { PrismaService } from '../db/prisma';
 
 @Injectable()
 export class PrismaPhotoRepository implements IPhotoRepository {
-  constructor(private readonly prisma: PrismaService) { }
+  constructor(private readonly prisma: PrismaService) {}
 
   get model() {
     return this.prisma.getCurrentTransaction().photo;

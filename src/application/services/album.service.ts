@@ -11,7 +11,7 @@ export class AlbumService {
   constructor(
     @Inject(IAlbumRepository)
     private readonly albumRepository: IAlbumRepository
-  ) { }
+  ) {}
 
   async getAlbum(id: string) {
     const album = await this.albumRepository.findById(id);

@@ -9,4 +9,4 @@ export const infinitePageQuerySchema = z.object({
   size: z.coerce.number().min(1).max(100).default(10)
 });
 
-export class InfinitePageQueryDto extends createZodDto(infinitePageQuerySchema) { }
+export class InfinitePageQueryDto extends createZodDto(infinitePageQuerySchema) {}

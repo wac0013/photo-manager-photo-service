@@ -12,7 +12,7 @@ export const CreatePhotoSchema = z.object({
     .describe('Cor predominante (hexadecimal)')
 });
 
-export class CreatePhotoDto extends createZodDto(CreatePhotoSchema) { }
+export class CreatePhotoDto extends createZodDto(CreatePhotoSchema) {}
 
 export const ALLOWED_IMAGE_MIMETYPES = [
   'image/jpeg',

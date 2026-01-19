@@ -7,4 +7,4 @@ export const UpdatePhotoSchema = CreatePhotoSchema.partial().omit({
   color: true
 });
 
-export class UpdatePhotoDto extends createZodDto(UpdatePhotoSchema) { }
+export class UpdatePhotoDto extends createZodDto(UpdatePhotoSchema) {}

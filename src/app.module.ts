@@ -52,4 +52,4 @@ import { GcsStorageService } from './infrastructure/storage/gcs-storage.service'
     }
   ]
 })
-export class AppModule { }
+export class AppModule {}

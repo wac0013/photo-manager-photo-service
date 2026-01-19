@@ -13,7 +13,7 @@ import { AlbumService } from 'src/application/services/album.service';
 @ApiBearerAuth()
 @Controller('albums')
 export class AlbumController {
-  constructor(private readonly albumService: AlbumService) { }
+  constructor(private readonly albumService: AlbumService) {}
 
   @Get()
   async getAlbums(@Query() query: InfinitePageQueryDto) {

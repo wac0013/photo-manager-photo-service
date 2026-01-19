@@ -7,3 +7,9 @@ dist/
 .vscode
 .DS_Store
 *.code-workspace
+
+.cursor
+.idea
+*.iml
+
+coverage

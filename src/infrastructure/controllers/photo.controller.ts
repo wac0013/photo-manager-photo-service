@@ -36,7 +36,7 @@ interface MulterFile {
 @ApiBearerAuth()
 @Controller()
 export class PhotoController {
-  constructor(private readonly photoService: PhotoService) { }
+  constructor(private readonly photoService: PhotoService) {}
 
   @Get('album/:albumId')
   async getPhotosByAlbum(@Param('albumId') albumId: string, @Query() query: InfinitePageQueryDto) {

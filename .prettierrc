@@ -2,10 +2,7 @@
   "singleQuote": true,
   "semi": true,
   "printWidth": 120,
-  "plugins": [
-    "prettier-plugin-tailwindcss",
-    "@trivago/prettier-plugin-sort-imports"
-  ],
+  "plugins": ["prettier-plugin-tailwindcss", "@trivago/prettier-plugin-sort-imports"],
   "bracketSpacing": true,
   "bracketSameLine": false,
   "arrowParens": "avoid",
@@ -15,12 +12,7 @@
   "trailingComma": "none",
   "proseWrap": "preserve",
   "endOfLine": "lf",
-  "importOrder": [
-    "^(react|next|next/.*)$",
-    "^[^@./]",
-    "^@(prisma/.*|/.*)$",
-    "^[./]"
-  ],
+  "importOrder": ["^(react|next|next/.*)$", "^[^@./]", "^@(prisma/.*|/.*)$", "^[./]"],
   "importOrderSeparation": true,
   "importOrderSortSpecifiers": true,
   "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"]
